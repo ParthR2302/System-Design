@@ -30,7 +30,7 @@ class EmailNotifier{
     }
 }
 
-public class SRP {
+public class SingleResponsibilityPrinciple {
     public static void main(String[] args) {
         System.out.println("Test");
     }
