@@ -1,4 +1,4 @@
-package SOLID_Principles.SRP;
+package SOLID_Principles.Single_Responsibility_Principle;
 
 // Without implementing SRP Principle
 // One class doing everything
@@ -32,6 +32,5 @@ class EmailNotifier{
 
 public class SingleResponsibilityPrinciple {
     public static void main(String[] args) {
-        System.out.println("Test");
     }
 }

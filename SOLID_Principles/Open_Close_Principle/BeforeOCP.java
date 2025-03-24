@@ -1,4 +1,4 @@
-package SOLID_Principles.OCP;
+package SOLID_Principles.Open_Close_Principle;
 
 // Before applying OCP
 /*
