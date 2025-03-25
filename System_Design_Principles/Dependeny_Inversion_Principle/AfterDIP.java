@@ -1,4 +1,4 @@
-package SOLID_Principles.Dependeny_Inversion_Principle;
+package System_Design_Principles.Dependeny_Inversion_Principle;
 
 interface EmailClient {
     void sendEmail(String recipient, String subject, String body);

@@ -1,4 +1,4 @@
-package SOLID_Principles.Single_Responsibility_Principle;
+package System_Design_Principles.Single_Responsibility_Principle;
 
 // Without implementing SRP Principle
 // One class doing everything

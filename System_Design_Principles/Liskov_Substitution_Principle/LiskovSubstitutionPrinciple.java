@@ -1,4 +1,4 @@
-package SOLID_Principles.Liskov_Substitution_Principle;
+package System_Design_Principles.Liskov_Substitution_Principle;
 
 // Before Applying LSP
 class Vehicle1 {

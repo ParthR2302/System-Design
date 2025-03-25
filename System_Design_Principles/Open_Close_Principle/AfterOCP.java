@@ -1,4 +1,4 @@
-package SOLID_Principles.Open_Close_Principle;
+package System_Design_Principles.Open_Close_Principle;
 
 // Step 1: Define an interface for Shapes
 interface Shape {

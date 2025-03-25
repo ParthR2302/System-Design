@@ -1,4 +1,4 @@
-package SOLID_Principles.Interface_Segregation_Principle;
+package System_Design_Principles.Interface_Segregation_Principle;
 
 interface mediaPlayer {
     void playViedeo();
