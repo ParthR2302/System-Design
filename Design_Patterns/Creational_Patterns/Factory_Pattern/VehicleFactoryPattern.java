@@ -3,9 +3,9 @@ package Design_Patterns.Creational_Patterns.Factory_Pattern;
 /*
  * - Product Interface
  * - Concrete Products: Car, Bike, Truck
- * - Factory Interface (Creator Interface)
+ * - VehicleFactory Interface (Creator Interface)
  * - Concrete Factories: CarFactory, BikeFactory, TruckFactory
- * --> If in future a new type of Vehicle comes we will only need to implement the Concrete class for that Vehicle and a dedicated factory class for that type of vehicle without touching any other part of the code and then we will be able to use that vehicle in our code.
+ * --> If in future a new type of Vehicle comes we will only need to implement the Concrete class for that Vehicle and a dedicated VehicleFactory class for that type of vehicle without touching any other part of the code and then we will be able to use that vehicle in our code.
 */
 
 // Product Interface
@@ -38,41 +38,41 @@ class Truck implements Vehicle {
     }
 }
 
-// Factory Interface (Creator Interface)
-interface Factory {
+// VehicleFactory Interface (Creator Interface)
+interface VehicleFactory {
     Vehicle getVehicle();
 }
 
 // Concrete Factories
-class CarFactory implements Factory {
+class CarFactory implements VehicleFactory {
     public Vehicle getVehicle() {
         return new Car();
     }
 }
 
-class BikeFactory implements Factory {
+class BikeFactory implements VehicleFactory {
     public Vehicle getVehicle() {
         return new Bike();
     }
 }
 
-class TruckFactory implements Factory {
+class TruckFactory implements VehicleFactory {
     public Vehicle getVehicle() {
         return new Truck();
     }
 }
 
-public class FactoryPattern {
+public class VehicleFactoryPattern {
     public static void main(String[] args) {
-        Factory carFactory = new CarFactory();
+        VehicleFactory carFactory = new CarFactory();
         Vehicle car = carFactory.getVehicle();
         car.create();
 
-        Factory bikeFactory = new BikeFactory();
+        VehicleFactory bikeFactory = new BikeFactory();
         Vehicle bike = bikeFactory.getVehicle();
         bike.create();
 
-        Factory truckFactory = new TruckFactory();
+        VehicleFactory truckFactory = new TruckFactory();
         Truck truck = (Truck)truckFactory.getVehicle();
         truck.create();
         truck.independentTruckMethod();
