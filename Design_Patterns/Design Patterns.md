@@ -46,7 +46,7 @@ Provides an interface for creating objects in a superclass, but allows subclasse
 ### Abstract Factory:
 <hr>
 
-[Code](./Creational_Patterns/Abstract_Factory/AbstractFactory.java) [[2](#references)]
+[Code](./Creational_Patterns/Abstract_Factory/AbstractFactory.java) [[3](#references)]
 
 `Abstract Factory` is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
 
@@ -65,13 +65,13 @@ Provides an interface for creating objects in a superclass, but allows subclasse
 ### Builder:
 <hr>
 
-[Computer Builder](./Creational_Patterns/Builder_Pattern/Computer_Builder/ClientCode.java) | [Car Builder - Important](./Creational_Patterns/Builder_Pattern/Car_Production/Demo.java)
+[Computer Builder](./Creational_Patterns/Builder_Pattern/Computer_Builder/ClientCode.java) | [Car Builder - Important](./Creational_Patterns/Builder_Pattern/Car_Production/Demo.java) | [Student Builder](./Creational_Patterns/Builder_Pattern/Student_Builder/Client.java)
 
 **Builder** is a creational design pattern that lets you construct complex objects <ins>step by step</ins>.
 
 The pattern allows you to produce different types and representations of an object using the same construction code.
 
-Create House Object example - Simple solution without applying Builder pattern [[3](#references)]. 
+Create House Object example - Simple solution without applying Builder pattern [[4](#references)]. 
 
 The Builder pattern suggests that you extract the object construction code out of its own class and move it to separate objects called builders.
 
@@ -111,5 +111,6 @@ Having Builder class in the code is not strictly necessary. You can always call 
 ## References:
 
 [1] [Design Patterns](https://refactoring.guru/design-patterns) <br />
-[2] [Abstract Factory Code](https://refactoring.guru/design-patterns/abstract-factory/java/example#example-0) <br />
-[3] [Builder](https://refactoring.guru/design-patterns/builder) <br />
+[2] [Gitlab Link](https://gitlab.com/shrayansh8/interviewcodingpractise/-/tree/main/src/LowLevelDesign/DesignPatterns/LLDChainResponsibilityDesignPattern)<br>
+[3] [Abstract Factory Code](https://refactoring.guru/design-patterns/abstract-factory/java/example#example-0) <br />
+[4] [Builder](https://refactoring.guru/design-patterns/builder) <br />
