@@ -30,7 +30,7 @@ List of Creational Design Patterns: Factory, Abstract Factory, Builder, Prototyp
 ### Factory Method:
 <hr>
 
-[Code](./Creational_Patterns/Factory_Pattern/FactoryPattern.java)
+[Code](./Creational_Patterns/Factory_Pattern/VehicleFactoryPattern.java)
 
 Provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
 
@@ -114,3 +114,7 @@ Having Builder class in the code is not strictly necessary. You can always call 
 [2] [Gitlab Link](https://gitlab.com/shrayansh8/interviewcodingpractise/-/tree/main/src/LowLevelDesign/DesignPatterns/LLDChainResponsibilityDesignPattern)<br>
 [3] [Abstract Factory Code](https://refactoring.guru/design-patterns/abstract-factory/java/example#example-0) <br />
 [4] [Builder](https://refactoring.guru/design-patterns/builder) <br />
+
+
+
+[N] [Algo Master](https://algomaster.io/learn/lld?code=49ad3beb-de9c-4079-8669-fbfe2b6d4cec)
