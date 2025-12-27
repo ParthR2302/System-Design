@@ -12,23 +12,38 @@ A cache is a temporary storage which keeps recently used data handy so that we c
 ## Where to cache?
 
 1. **External Caching:**
+    - Examples: **Redis, Memcached, Hazelcast**
     - In case of `cache hit` (If the data is found in cache) then retrieve from cache. In case of `cache miss`, fetch it from DB as fallback.
     - In case of fallback, the retrieved data is stored in the cache.
     - This is usually called `Cache-Aside (Lazy Loading) pattern`.
     - In a scaled system which might have multiple application servers, these `servers can share the same external cache`.
+        - **Pros:** Scales horizontally with your application. Reduces load on DB. Supports replication, clustering, persistence.
+        - **Cons:** Slower than in-process (network hop), Needs infra maintenance.
+        - **When to use:** Multi-server systems, Heavy read traffic, Shared state needed across servers
+
 
 2. **In Process Caching:**
+    - Examples: **Caffeine, Guava Cache, HashMap with TTL**
     - No complexity of adding something like Reddis. If application servers have plenty of memory, this can be a good option.
     - Its the fastest kind of caching.
     - Independent caching for each servers.
+        - **Pros:** Ultra-low latency. No dependency on external systems. Extremely simple
+        - **Cons:** No synchronization between servers. More memory per server. Data lost on restart
+        - **When to use:** Small to medium-scale systems. Rarely changing data. Static reference tables (countries, currencies). Configuration values
 
 3. **CDN:**
+    - Examples: **CloudFront, Cloudflare, Akamai**
     - `Geographically distributed network of servers` that can cache contents closer to users.
     - Core goal is Optimization for network latency.
     - Media delivery is the most used case. Modern CDN can do more than storing static data. They can store public API reponses, HTML pages.
+        - **Pros:** Massive reduction in network latency. Reduces load on backend systems. Handles huge traffic spikes
+        - **Cons:** Not suitable for personalized content. Invalidation takes time
 
 4. **Client Side Caching:**
     - Data is stored directly on the user's device in the browser or app.
+        - **Pros:** Zero network latency. Saves server cost. Good for offline access
+        - **Cons:** Limited size. Must not store sensitive data. Invalidation is difficult
+        - **When to use:** UI preferences. Recent items. Session tokens (with security care)
 
 ## Cache Architectures:
 
