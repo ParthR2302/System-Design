@@ -7,7 +7,7 @@
     - [How to Distribute Data](#how-to-distribute-data)
 - [Interview Discussion](#things-to-discuss-in-interview-for-sharding)
 - [Consistent Hashing](#consistent-hashing)
-
+- [Resources](#resources)
 ## Why do we need sharding:
 
 ![Need of sharding](./Images/Sharding/Need_Of_Sharding.png)
@@ -113,3 +113,7 @@ There are three steps in Consistent Hashing:
 
 **When to go deep into details in Interview?**
 - Designing a single scaled backend component like Distributed Cache, Distributed Database, Distributed Messaging Queue
+
+## Resources:
+
+- https://app.excalidraw.com/l/56zGeHiLyKZ/1Seg2UzvFHp

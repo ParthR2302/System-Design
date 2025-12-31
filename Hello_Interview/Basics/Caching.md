@@ -123,3 +123,4 @@ When atleat one of the below is true:
 ## Reference:
 
 - https://www.hellointerview.com/learn/system-design/core-concepts/caching
+- https://app.excalidraw.com/l/56zGeHiLyKZ/7AUE0BlFxMd

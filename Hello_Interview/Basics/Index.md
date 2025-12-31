@@ -1,6 +1,8 @@
 # Basics
 
 - [Caching](./Caching.md)
+- [Sharding](./Sharding.md)
+- [Data Modeling](./DataModeling.md)
 
 <br>
 
