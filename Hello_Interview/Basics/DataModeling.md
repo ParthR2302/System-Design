@@ -8,6 +8,10 @@
 - [Scaling and Sharding](#scaling-and-sharding)
 - [Key Points](#key-points)
 
+<br>
+
+- [Resource](#resources)
+
 ## Overview:
 
 A data model defines how your data is structured, stored, related.
