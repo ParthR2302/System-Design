@@ -1,10 +1,14 @@
 # Design Patterns:
 
-1. [Details](#details)
-2. [Creational Design Patterns](#creational-design-patterns)
-    1. [Factory Method](#factory-method)
-    2. [Abstract Factory](#abstract-factory)
-    3. [Builder](#builder)
+- [Details](#details)
+- [Creational Design Patterns](#creational-design-patterns)
+    - [Factory Method](#factory-method)
+    - [Abstract Factory](#abstract-factory)
+    - [Builder](#builder)
+- [Behavioural Design Pattern](#behavioural-patterns)
+    - [Strategy Method](#strategy-pattern)
+    - [Observer Pattern](#observer-pattern)
+    - [Decorator Pattern](#decorator-pattern)
 
 ## Details:
 
@@ -33,6 +37,9 @@ List of Creational Design Patterns: Factory, Abstract Factory, Builder, Prototyp
 [Code](./Creational_Patterns/Factory_Pattern/VehicleFactoryPattern.java)
 
 Provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
+- In simple term, Factory Pattern provides a method to create objects without exposing the creation logic to the client.
+
+**Core Idea:** Object creation is centralized and hidden.
 
 **Key Components**
 1. `Product` (Interface/Abstract Class) – Defines the type of object that will be created.
@@ -42,6 +49,25 @@ Provides an interface for creating objects in a superclass, but allows subclasse
 **When to use?**
 - Use the Factory Method when you don’t know beforehand the exact types and dependencies of the objects your code should work with.
 
+**Why Factory Pattern is powerful?**
+- Loose coupling
+- Single Responsibility Principle
+- Easy to manage object creation
+- Cleaner client code
+
+**Examples:**
+- Calendar.getInstance()
+- LoggerFactory.getLogger()
+- Database connection pools
+- Object creation in frameworks (Spring beans)
+- Parsing libraries
+
+`**Important:**` [Simple Factory](./Creational_Patterns/Factory_Pattern/CarFactoryPattern.java) vs [Factory Method](./Creational_Patterns/Factory_Pattern/VehicleFactoryPattern.java)
+
+**Factory Method:** Define an interface for creating an object, but let subclasses decide which class to instantiate.
+- Creation is delegated to subclasses.
+
+Factory method resolves Single Responsibility priciple issue which was being violated in the Simple Factory pattern.
 
 ### Abstract Factory:
 <hr>
@@ -49,6 +75,8 @@ Provides an interface for creating objects in a superclass, but allows subclasse
 [Code](./Creational_Patterns/Abstract_Factory/AbstractFactory.java) [[3](#references)]
 
 `Abstract Factory` is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
+
+Factory Method creates one product, Abstract Factory creates a family of products.
 
 **Key Components;**
 1. `Abstract Factory` (Interface for Factories) – Declares methods for creating product families.
@@ -92,9 +120,41 @@ Having Builder class in the code is not strictly necessary. You can always call 
 - **Director** (Optional, Orchestrates Construction) → Guides the building process (e.g., predefined configurations).
 - **Client** (Uses the Builder to Create Objects) → Uses the builder to construct the object as needed.
 
+## Behavioural Patterns:
 
+### Strategy Pattern:
 
+Strategy = Same goal, different ways, swappable at runtime.
 
+Examples:
+- Paying for an order: Credit Card, UPI, Net Banking
+
+### Observer Pattern:
+
+Observer = One changes, many react.
+
+**Push:** Subject pushes data to observers
+
+**Pull:** Subject only notifies → Observer pulls data
+
+Most LLD interviews prefer Pull model
+- Pull model is preferred when observers need different views of data and we want loose coupling.
+
+Examples:
+- Notification systems, Stock Price updates, Subsciption Technologies
+
+### Decorator Pattern:
+
+Decorator Pattern lets you add new behavior to an object dynamically by wrapping it, without modifying its original class.
+
+Decorators and the original object share the same interface.
+
+Decorator = wrap an object to add behavior.
+
+Examples:
+- 
+
+### Factory and Abstract Factory:
 
 
 

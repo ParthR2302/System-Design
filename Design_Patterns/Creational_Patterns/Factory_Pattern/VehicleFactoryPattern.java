@@ -6,31 +6,33 @@ package Design_Patterns.Creational_Patterns.Factory_Pattern;
  * - VehicleFactory Interface (Creator Interface)
  * - Concrete Factories: CarFactory, BikeFactory, TruckFactory
  * --> If in future a new type of Vehicle comes we will only need to implement the Concrete class for that Vehicle and a dedicated VehicleFactory class for that type of vehicle without touching any other part of the code and then we will be able to use that vehicle in our code.
+ * 
+ * Below is Factory method pattern implementation in Java.
 */
 
 // Product Interface
 interface Vehicle {
-    void create();
+    void drive();
 }
 
 // Concrete Product: Car
 class Car implements Vehicle {
-    public void create() {
-        System.out.println("Car Created");
+    public void drive() {
+        System.out.println("Car is driving");
     }
 }
 
 // Concrete Product: Bike
 class Bike implements Vehicle {
-    public void create() {
-        System.out.println("Bike Created");
+    public void drive() {
+        System.out.println("Bike is driving");
     }
 }
 
 // Concrete Product: Truck
 class Truck implements Vehicle {
-    public void create() {
-        System.out.println("Truck Created");
+    public void drive() {
+        System.out.println("Truck is driving");
     }
 
     public void independentTruckMethod() {
@@ -62,19 +64,36 @@ class TruckFactory implements VehicleFactory {
     }
 }
 
+// We can directly use the factories to get the vehicle objects 
+// Or we can have a FactoryProducer class to get the factories based on some input
+class FactoryProducer {
+    public static Vehicle getFactory(String factoryType) {
+        if (factoryType.equalsIgnoreCase("Car")) {
+            return new CarFactory().getVehicle();
+        } else if (factoryType.equalsIgnoreCase("Bike")) {
+            return new BikeFactory().getVehicle();
+        } else if (factoryType.equalsIgnoreCase("Truck")) {
+            return new TruckFactory().getVehicle();
+        }
+        return null;
+    }
+}
+
 public class VehicleFactoryPattern {
     public static void main(String[] args) {
+        
+        // Car is created directly using CarFactory
         VehicleFactory carFactory = new CarFactory();
         Vehicle car = carFactory.getVehicle();
-        car.create();
+        car.drive();
 
-        VehicleFactory bikeFactory = new BikeFactory();
-        Vehicle bike = bikeFactory.getVehicle();
-        bike.create();
+        // Bike is created using FactoryProducer with Passing type of vehicle variable
+        Vehicle bike = FactoryProducer.getFactory("Bike");
+        bike.drive();
 
         VehicleFactory truckFactory = new TruckFactory();
         Truck truck = (Truck)truckFactory.getVehicle();
-        truck.create();
+        truck.drive();
         truck.independentTruckMethod();
     }
 }
