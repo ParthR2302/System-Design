@@ -75,8 +75,14 @@ Factory method resolves Single Responsibility priciple issue which was being vio
 [Code](./Creational_Patterns/Abstract_Factory/AbstractFactory.java) [[3](#references)]
 
 `Abstract Factory` is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
+- Its a higher-level pattern that internally uses either Simple Factory or Factory Method to create families of objects.
+    - Simple Factory / Factory Method → how to create ONE object
+    - Abstract Factory → how to create a SET of related objects
 
 Factory Method creates one product, Abstract Factory creates a family of products.
+- Its like having multiple factories where each factory produces a complete family of products that work together.
+
+Abstract Factory can be implemented either using a Simple Factory approach with conditionals, or more commonly using Factory Method, where each concrete factory represents a product family and each creation method is a factory method. This allows the system to remain open for extension and closed for modification.
 
 **Key Components;**
 1. `Abstract Factory` (Interface for Factories) – Declares methods for creating product families.
