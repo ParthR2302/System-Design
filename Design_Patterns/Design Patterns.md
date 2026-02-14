@@ -9,6 +9,9 @@
     - [Strategy Method](#strategy-pattern)
     - [Observer Pattern](#observer-pattern)
     - [Decorator Pattern](#decorator-pattern)
+    - [Null Object Design Pattern](#null-object-design-pattern)
+- [Structural Design Patterns](#structural-design-patterns)
+    - [Proxy Design Pattern](#proxy-design-pattern)
 
 ## Details:
 
@@ -158,9 +161,10 @@ Decorators and the original object share the same interface.
 Decorator = wrap an object to add behavior.
 
 Examples:
-- 
 
 ### Chain of Responsibility
+
+[Code](./Behavioural_Patterns/Chain_of_Responsibility/Logger/LoggerMain.java)
 
 Chain of Responsibility pattern is a behavioural pattern that passes request along a chain of handlers. Each handler decides **`either to process the request or to pass it to the next handler`** in the chain.
 - We can add/remove handlers from the chain
@@ -172,13 +176,23 @@ Contains Abstract Handler and then the concrete handlers implementing the functi
 - Logger in an application. Logger levels: DEBUG Logs, INFO logs, ERROR logs - End of chain.
 - ATM Machine: 500 Rs note, 200 note, 100 note, 50 note, 20 note, 10 note - End of chain
 
+### Null Object Design Pattern
 
+Null Object pattern is a behavioural design pattern that uses Polymorphism to eliminate null checks.
+- Instead of returning null and adding NULL checks whenever necessary, we return a special object called Null Object that implements the expected interface but does nothing.
 
-### Factory and Abstract Factory:
+## Structural Design Patterns
 
+### Proxy Design Pattern
 
+[Code](./Structural_Patterns/Proxy_Design_Pattern/EmployeeMain.java)
 
+It provides a representative or place holder for another object (real object) to control the access over it.
+- Client -> Proxy -> Real Object
 
+**Usecase of Proxy:**
+- Access Control: Restrict access to sensitive operations based on user permissions
+- Pre/Post Processing: Perform additional operations before and/or after the request to actual object
 
 
 
