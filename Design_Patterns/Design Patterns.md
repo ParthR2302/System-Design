@@ -160,6 +160,20 @@ Decorator = wrap an object to add behavior.
 Examples:
 - 
 
+### Chain of Responsibility
+
+Chain of Responsibility pattern is a behavioural pattern that passes request along a chain of handlers. Each handler decides **`either to process the request or to pass it to the next handler`** in the chain.
+- We can add/remove handlers from the chain
+
+Contains Abstract Handler and then the concrete handlers implementing the functionalilty.
+- Since we need to pass the request to another handler which is of same type, `Handler has an object of itself`.
+
+**Example:** 
+- Logger in an application. Logger levels: DEBUG Logs, INFO logs, ERROR logs - End of chain.
+- ATM Machine: 500 Rs note, 200 note, 100 note, 50 note, 20 note, 10 note - End of chain
+
+
+
 ### Factory and Abstract Factory:
 
 
