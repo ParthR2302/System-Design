@@ -10,6 +10,7 @@
     - [Observer Pattern](#observer-pattern)
     - [Decorator Pattern](#decorator-pattern)
     - [Null Object Design Pattern](#null-object-design-pattern)
+    - [State Design Pattern](#state-design-pattern)
 - [Structural Design Patterns](#structural-design-patterns)
     - [Proxy Design Pattern](#proxy-design-pattern)
 
@@ -180,6 +181,19 @@ Contains Abstract Handler and then the concrete handlers implementing the functi
 
 Null Object pattern is a behavioural design pattern that uses Polymorphism to eliminate null checks.
 - Instead of returning null and adding NULL checks whenever necessary, we return a special object called Null Object that implements the expected interface but does nothing.
+
+## State Design Pattern
+
+The state design pattern allows an object to change its behaviour dynamically at runtime whenever there is a change in its internal state.
+- Problems where object change the state after performing some operations can be solved using State Design Pattern.
+
+**UML:**
+
+![alt text](./Images/State_Design_UML.png)
+
+**Examples:**
+- Traffic Signal: States: Red, Green, Yellow [Code](./Behavioural_Patterns/State_Design_Pattern/Traffic_light/TrafficLightMain.java)
+- Vending Machine: States: Idle, Accept Coin, Product Selection, change calculation, etc.
 
 ## Structural Design Patterns
 
