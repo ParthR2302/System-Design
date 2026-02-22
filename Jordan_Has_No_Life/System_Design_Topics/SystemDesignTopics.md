@@ -159,6 +159,7 @@ Any database that implements Read Commit Isolation is going to `protect againts 
 #### Write Skew and Phantom Writes
 
 - `Phantom` occurs when two people write new rows that conflict and the issue with new rows is there are no locks to grab
+- When we do a read-modify-update cycle and the update part is actually adding new raws to our table.
     - Fix: Materialize Conflicts
 
 #### Lost Update
@@ -181,3 +182,60 @@ When the execution query/script is more in size, sending it on network becomes s
     - Ex. addInventory(productId, quantity)
 - Hard to manage code deployements and version control, not used elsewhere much
 
+## 2 Phase Locking
+
+2 Phase Locing is another way of achieving isolation or serialization.
+- Make concurrent transactions seem as if they were running on one thread
+- So, instead of just being a lock is enabling us exclusive access to the row itself, we may actually have a concept to share that object.
+    - `Shared Reader Locks, Exclusive Writer Locks`
+    - If a row has multiple reader locks concurrently, for write to happen we need to wait for all reader locks to unblock. Writer lock is exclusive so no concurrency there.
+
+**Problems:**
+- Deadlocks
+- Phantom
+    - Fix: `Predicate Locks`
+        - Grab all the rows that fit certain conditions. Slow to run, we need to evaluate the full query.
+
+## Index Range Locking
+
+Take advantage of table index to grab more predicate locks than necessary (Example, if query consists 2 WHERE clause, only take one WHERE clause into consideration - Less conditions = more rows. By virtue of the fact that there is an index on that field)
+
+Since, we are locking more rows than we need to, the disadvantage is that now other queries which were supposed to be executed on other rows are now on hold because of that unnecessary lock.
+
+Its a delicate balance.
+
+## Serializable Snapshot Isolation
+
+Its a type of Optimistic Concurrency Control
+
+Problems with 2 Phase Locking
+- All transactions need to grab locks which is slow
+    - Its also Rarely Actually Needed
+
+Why grab locks when we can just run normal and correct mistakes after they happen
+- Majority of the transactions don't deal with other transactions, they do their own thing
+- If we are just goin to run one isolated transaction and no one else is coming near it we don't have to actually grab those locks
+
+Snapshots:
+- consistent state of database at a point of time
+
+**Example:**
+- Reading from a snapshot
+- Read/update/modify transaction which looks faulty
+- something like dirty read is detected (uncommited write)—> transaction is aborted —> try again?
+    - multiple transactions rely on a value, value changes before commit —> abort and role back —> try again?
+
+**How does the detection work?**
+- After a transaction finishes executing, it goes through a validation phase at commit time to check if it can still be serialized
+- Readers don’t block writers and vice versa — concurrency is higher
+
+**Summary**:
+- **`optimistic locking`** —> you don’t expect most writes to be accessing the same data, and if they do one of the transactions will get rolled back and retried
+- **`pessimistic locking`** —> you expect transactions to access the same data
+
+**Important:**
+- 2PL is a pessimistic concurrency control method where as SSI is optimistic concurrency control method.
+- Snapshot isolation alone isn’t serializable!
+    - Write skew can still happen with basic snapshot isolation (Two doctors check no one is on call → both assign themselves off → no doctor ends up on call — violating the rule that at least one must be on)
+
+**Conclusion:** Use SSI instead of 2PL if most transactions don't cause concurrency bugs, otherwise use 2PL.
