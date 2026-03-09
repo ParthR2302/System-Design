@@ -89,8 +89,6 @@ Mention what the Shard Key would be in this database. `Be explicite about this`.
 3. Call out the trade-offs
 4. Address how will you handle the growth
 
-
-
 ## Consistent Hashing:
 
 There are three steps in Consistent Hashing:
