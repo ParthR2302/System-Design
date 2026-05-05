@@ -61,14 +61,14 @@ If data grows larger and/or request per second (wps - Writes Per Second) increas
         - Add a directory to check if id is celebrity. If celebrity, lookup in that dedicated shard or else go on usual method like hash shard method and find the appropriate shard.
 2. Cross-Shard operations:
     - Any operations that need information from more than one shard becomes more expensive.
-    - It usually happend when the query doesn't align with the shard key.
+    - It usually happens when the query doesn't align with the shard key.
     - We cannot eliminate cross shard queries completely,
         - First line of defence: `choose a good shard key`.
         - `Caching the results` of the most popular cross shard queries can help reducing cross-shard lookups. We are trading latency with consistency here for the particular time perios that result is in cache.
         - Another option is to `Denormalize the data`.
 3. Maintaining Consistency:
     - If we need atomic transaction. Bob send 5$ to Alice. Bob is in Shard-3 and Alice is in Shard-1.
-    - Possible Solution: `2-Phasec Commits` (2PC). Getting into lock is one problem with 2PC.
+    - Possible Solution: `2-Phase Commits` (2PC). Getting into lock is one problem with 2PC.
     - Solution: `Saga Pattern`. 
 
 

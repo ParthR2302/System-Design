@@ -1,5 +1,19 @@
 # Partition in Database
 
+1. [Overview](#overview)
+2. [Partition Types](#partition-types)
+   - [Range Based Partition](#range-based-partition)
+   - [Hash Range Based Partition](#hash-range-based-partition)
+3. [Secondary Indexes](#secondary-indexes)
+   - [Local Secondary Indexes](#local-secondary-indexes)
+   - [Global Secondary Index](#global-secondary-index)
+4. [Distribute Transactions](#distribute-transactions)
+   - [Two Phase Commit](#two-phase-commit)
+5. [Consistent Hashing](#consistent-hashing)
+
+
+## Overview
+
 Splitting the database into multiple partition so that the storage is distributed.
 - Some of/All of the partitions can be in different machines
 
@@ -79,3 +93,48 @@ Number of Partitions per node???
 
 Detailed notes present in Hello_Interview/Basics/Sharding/#Consistent-Hashing
 
+## Linearizable Databases
+
+### What is Linearizable Storage?**
+
+Linearizable storage, also known as strong or atomic consistency, guarantees that every read operation returns the most recent write for a given piece of data
+- We need this for "correct" reads
+- Just one person with the lock, just one database leader
+
+Instead of a single server database, linearizable databases can be distributed, but they act as a single server database from client's perspective
+- To achieve this linearizability in distributed databases, it often requires consensus algorithms
+
+Linearizable storage is going to allow us to do is build applications on top of that such as distributed locking or service discovery mechanism
+
+### How do we order our writes?
+
+**Single Leader Replication:** Using replication log
+- Send the replication log from leader to all the replicas
+
+**Multi-Leader/Leaderless Replication:** [Version vectors](./Replication.md#version-vectors-important)/[Lamport Clock](#lamport-clocks---o1-space) 
+
+Version Vectors / Lamport Clocks are NOT Linearizable [image](#lamport-clocks---o1-space)
+
+
+#### Single Leader is not linearizable
+
+Writes order is like x=5 and then x=10. Now, x=5 is replicated in the followers. X=10 is in replication log but not replicated yet
+- If replication is **`Asynchronous`** then we cannot achieve linearizability
+- Also, it is not a fault tolerant linearizability
+
+We need **`Total Order Broadcast`**:
+1. Every node has to agree on the order of writes
+2. In the face of faults, we cannot lose any writes
+
+How do we make this happen? [Distributed Consensus](#distributed-consensus)
+
+#### Lamport Clocks - O(1) space
+
+![Lamport Clocks](./Images/lamport_clocks.png)
+
+Version Vectors / Lamport Clocks are NOT Linearizable
+
+![Not Linearizable](./Images/vv_lc_not_linearizable.png)
+
+Why? We can be in good shape (consistent data between nodes) once convergence happens between nodes.
+- Lamport clock only give us a total ordering after the fact. We still need to wait for the convergence (replication) between nodes
