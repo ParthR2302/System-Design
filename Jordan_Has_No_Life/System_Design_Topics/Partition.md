@@ -141,11 +141,13 @@ Why? We can be in good shape (consistent data between nodes) once convergence ha
 
 ##  Distributed Consensus
 
-Entire point is to build a linearizable storage.
+The goal of distributed consensus is for multiple nodes to agree on a consistent sequence of operations despite failures. 
+- Raft uses replicated logs to help build fault-tolerant, linearizable state machines.
 
 ### Raft - Build a Distributed Log
 
-Why do we want logs? `Logs are ordered`, hence, they are linearizable 
+Why do we want logs? 
+- Raft’s replicated log provides a `globally agreed ordering of operations`, which allows the system to implement a linearizable state machine.
 
 The distributed log contains Operations and a term number
 - So we have a leader and the leader is Asynchronously replicating over to the follower nodes.
@@ -156,8 +158,8 @@ NOTE: `Raft is expliciltly designed for Single Leader Replication`.
 
 #### Raft Leader Election and how does it work
 
-Basically our Raft leader has something called an `epoch number` (referred to as a **Term** in Raft). 
-- An **epoch number** is a monotonically increasing integer that acts as a logical clock. 
+Basically our Raft leader has something called an `epoch number` (referred to as a **Term** in Raft).
+- An **epoch number** is a monotonically increasing integer that acts as a logical clock identifying a leadership era. 
 - It identifies the current leadership cycle and acts as the ultimate source of truth to detect and reject stale leaders or outdated messages.
 
 The election process operates through the following stages:
@@ -186,6 +188,10 @@ The election process operates through the following stages:
 2. Old leaders cannot come back due to fencing token/epoch numbers
 3. Leader has up-to-date log and can backfill stale nodes
 
+Raft has two core RPCs:
+1. RequestVote - For election
+2. AppendEntries - Replication + Heartbeats
+
 #### Raft Writes
 
 It is not necessary that all the followers have latest updated log (Although it is necessary for some of them to have latest log - will discuss this here)
@@ -197,14 +203,54 @@ Not only writes have to actually write to the log, but more importantly it also 
    - Leader-22: A-21, B-21, C-22 (A,B,C are operations and numbers are epoch), one of the follower has (D-20, A-21, B-21)
       - Why does it have D-20 and current leader does not have it? It can be becuase this node was previous leader and had D operation written in its log but it died before it could propogate this transaction to the then followers
    - prefix (if there is any index where we have identical operation and epoch number, then the indices before this index are prefix) need to be same in leader and follower, suffix can differ (indices after the latest identical index)
-      - So because `writes backfill logs`, if two logs are the same at a given point, they must be the same everywhere before that point. 
+      - So because **`writes backfill logs`**, if two logs are the same at a given point, they must be the same everywhere before that point. 
+         - leaders repair follower logs
    - We send prefix and suffix from leader to followers, and if any follower's latest entry is behind the prefix, it rejects, and then, the leader send another request with suffix and prefix  starting from one index behind.
 If the leader hears "YES" from quorum of nodes, it can tell everyone to commit!
+
+**Leader commits an entry when**:
+- Entry is replicated to majority
+- Entry belongs to current leader’s term
+   - This second rule is VERY important in Raft.
+
 - So as long as we have this write committed in the majority of the node, the new leader (if elected in future) would definetely have this write
    - Why? Because a leader needs majority of the votes to get elected and vote only happens if the candidate has at least as latest log as the follower.
+
+#### Replicated vs Committed Entries
+
+An entry is Replicated When followers have received the log entry.
+
+And, Committed When the leader knows the entry is safely stored on a quorum (majority).
+
+Only committed entries are guaranteed to survive future elections.
 
 **Conclusion:**
 - Raft helps creating Fault Tolerant, Linearizable Storage
 - Raft is SLOW (Leader is bottleneck)
-- Raft is Fault Tolerant, but it doesn't replcae two phase commit since all writes to replicas are the same
+- Raft is Fault Tolerant, but it doesn't replace two phase commit since all writes to replicas are the same
    - Two Phase Commit helps in `Cross Partition Distributed Transactions`
+   - Raft provides replication consensus `within a shard/replica` group, whereas 2PC coordinates atomic transactions `across multiple independent partitions/services`.
+
+## ZooKeeper - Coordination Services
+
+Consensus is slow, but sometimes we need it
+
+Type of configurations we have: IPs for servers and databases, replication schema, partitioning breakdown.
+
+A coordination service is a key-value store that allows us to store this data in a reliable way.
+
+ZooKeeper, Etcd are some of the example of modern day coordination services
+
+### How do they work
+
+Coordination services are built on top of a distributed consensus layer like Raft
+
+How do we read data from a distributed service that implements Distributed Consensus like Raft?
+1. Can always read from the leader
+   - But in this case all the reads and writes would always go to the leader -> Slow
+2. Sometime we can read from different follower nodes
+   - The key thing to note is that again we want those reads to be linearizable.
+   - In ZooKeeper there this is achieved using SYNC keyword
+      - Ensuring Up-to-Date Reads: When a client must read the absolute latest version of a znode, `it should call sync() before its read`. This forces the server the client is connected to to "catch up" with the leader's current state.
+      - The sync() is asynchronous in behavior, not for client read operation but for the thread. It uses callback function, so while the sync() is in progress the thread can work on something else, after the successful execution it calls the callback function which in itself holds our read operation
+      - When to use sync() and when to skip depends on our requirement. Skip when we need high read throughput, data changes infrequentely, reading a configuration. 
