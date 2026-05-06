@@ -130,11 +130,81 @@ How do we make this happen? [Distributed Consensus](#distributed-consensus)
 
 #### Lamport Clocks - O(1) space
 
-![Lamport Clocks](./Images/lamport_clocks.png)
+![Lamport Clocks](./images/lamport_clocks.png)
 
 Version Vectors / Lamport Clocks are NOT Linearizable
 
-![Not Linearizable](./Images/vv_lc_not_linearizable.png)
+![Not Linearizable](./images/vv_lc_not_linearizable.png)
 
 Why? We can be in good shape (consistent data between nodes) once convergence happens between nodes.
 - Lamport clock only give us a total ordering after the fact. We still need to wait for the convergence (replication) between nodes
+
+##  Distributed Consensus
+
+Entire point is to build a linearizable storage.
+
+### Raft - Build a Distributed Log
+
+Why do we want logs? `Logs are ordered`, hence, they are linearizable 
+
+The distributed log contains Operations and a term number
+- So we have a leader and the leader is Asynchronously replicating over to the follower nodes.
+   - So it is possible for one follower to be behind. Its not possible for all of the logs to be behind (Will talk about this later)
+- Two main steps of Raft: `1. Leader Election, 2. Log Replication`
+
+NOTE: `Raft is expliciltly designed for Single Leader Replication`.
+
+#### Raft Leader Election and how does it work
+
+Basically our Raft leader has something called an `epoch number` (referred to as a **Term** in Raft). 
+- An **epoch number** is a monotonically increasing integer that acts as a logical clock. 
+- It identifies the current leadership cycle and acts as the ultimate source of truth to detect and reject stale leaders or outdated messages.
+
+The election process operates through the following stages:
+
+- **Node States:** Nodes are always in one of three states: *Leader*, *Follower*, or *Candidate*.
+- **Triggering an Election:** Followers expect regular periodic heartbeats from the leader. If a follower experiences an **Election Timeout** (receives no communication for a set period), it assumes the leader is dead.
+   - **Randomized Election Timeouts:** Different follower nodes have different election timeout values
+- **Becoming a Candidate:** The follower increments the cluster's `epoch number`, transitions to a *Candidate*, votes for itself, and broadcasts a `RequestVote` RPC to all other nodes.
+- **Voting Mechanics:** 
+  - Nodes grant votes on a first-come, first-served basis.
+  - A node can only vote for **one candidate per epoch**.
+  - **Safety Check:** A voter will reject a candidate if the candidate's log is less up-to-date than the voter's own log.
+  - **Safety Check (Log Completeness):** A voter will reject a candidate if the candidate's log is less up-to-date than the voter's own log.
+- **Epoch Validation & Voting Scenarios:**
+  - **Follower Epoch > Candidate Epoch:** The follower rejects the vote immediately (`Vote: No`). This single "No" response contains the higher epoch, forcing the stale candidate to instantly drop its candidacy and step down to a follower (no majority needed to halt a stale candidate).
+  - **Follower Epoch == Candidate Epoch:** 
+    - *Scenario A (Already Voted):* If the follower already granted its vote to a different candidate in this exact term, it must reject the request (`Vote: No`).
+    - *Scenario B (Not Voted Yet):* The follower runs the Log Completeness check. If the candidate's log is at least as up-to-date as the follower's log, it must vote `YES`. If the candidate's log is stale, it must vote `NO`. It cannot skip or ignore the request.
+  - **Follower Epoch < Candidate Epoch:** The follower realizes its local epoch is outdated. It immediately updates its epoch number to match the candidate's. (Note: If a Candidate or Leader detects a larger epoch from anyone else, they must immediately step down to a Follower state). Once the epoch is updated, the node evaluates the candidate's log completeness to vote `YES` or `NO` (Epoch number comparison and Log Correctness check both are different things and they serve different purposes).
+- **Winning the Election:** A candidate must secure a **majority quorum** (more than half of the cluster's votes) to become the new Leader. Once it wins, it immediately broadcasts heartbeats to assert authority and reset everyone's election timers.
+- **Handling Split Votes:** If multiple nodes become candidates simultaneously, votes can split, resulting in no majority winner. Raft solves this by using **randomized election timeouts** (e.g., between 150ms–300ms) for each node. This ensures one node will almost always time out first and claim the majority in the next epoch.
+
+**Why does it work?**
+
+1. Can't elect two leaders at the same time due to quorums
+2. Old leaders cannot come back due to fencing token/epoch numbers
+3. Leader has up-to-date log and can backfill stale nodes
+
+#### Raft Writes
+
+It is not necessary that all the followers have latest updated log (Although it is necessary for some of them to have latest log - will discuss this here)
+
+Not only writes have to actually write to the log, but more importantly it also has to be able to backfilll the log
+1. There is only one leader per term
+2. Successful writes must make log fully up-to-date
+   - Meaning if two logs have the same term number at the same index, they must be identical prior to that index
+   - Leader-22: A-21, B-21, C-22 (A,B,C are operations and numbers are epoch), one of the follower has (D-20, A-21, B-21)
+      - Why does it have D-20 and current leader does not have it? It can be becuase this node was previous leader and had D operation written in its log but it died before it could propogate this transaction to the then followers
+   - prefix (if there is any index where we have identical operation and epoch number, then the indices before this index are prefix) need to be same in leader and follower, suffix can differ (indices after the latest identical index)
+      - So because `writes backfill logs`, if two logs are the same at a given point, they must be the same everywhere before that point. 
+   - We send prefix and suffix from leader to followers, and if any follower's latest entry is behind the prefix, it rejects, and then, the leader send another request with suffix and prefix  starting from one index behind.
+If the leader hears "YES" from quorum of nodes, it can tell everyone to commit!
+- So as long as we have this write committed in the majority of the node, the new leader (if elected in future) would definetely have this write
+   - Why? Because a leader needs majority of the votes to get elected and vote only happens if the candidate has at least as latest log as the follower.
+
+**Conclusion:**
+- Raft helps creating Fault Tolerant, Linearizable Storage
+- Raft is SLOW (Leader is bottleneck)
+- Raft is Fault Tolerant, but it doesn't replcae two phase commit since all writes to replicas are the same
+   - Two Phase Commit helps in `Cross Partition Distributed Transactions`
