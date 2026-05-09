@@ -10,6 +10,10 @@
 4. [Distribute Transactions](#distribute-transactions)
    - [Two Phase Commit](#two-phase-commit)
 5. [Consistent Hashing](#consistent-hashing)
+6. [Linearizable Databases](#linearizable-databases)
+7. [Distributed Consensus](#distributed-consensus)
+   - [Raft - Build a Distributed Log](#raft---build-a-distributed-log)
+8. [ZooKeeper - Coordination Services](#zookeeper---coordination-services)
 
 
 ## Overview
@@ -253,4 +257,4 @@ How do we read data from a distributed service that implements Distributed Conse
    - In ZooKeeper there this is achieved using SYNC keyword
       - Ensuring Up-to-Date Reads: When a client must read the absolute latest version of a znode, `it should call sync() before its read`. This forces the server the client is connected to to "catch up" with the leader's current state.
       - The sync() is asynchronous in behavior, not for client read operation but for the thread. It uses callback function, so while the sync() is in progress the thread can work on something else, after the successful execution it calls the callback function which in itself holds our read operation
-      - When to use sync() and when to skip depends on our requirement. Skip when we need high read throughput, data changes infrequentely, reading a configuration. 
+      - When to use sync() and when to skip depends on our requirement. Skip when we need high read throughput, data changes infrequentely, reading a configuration.
