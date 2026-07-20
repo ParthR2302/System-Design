@@ -1,18 +1,29 @@
 # Design Patterns:
 
-- [Details](#details)
-- [Creational Design Patterns](#creational-design-patterns)
-    - [Factory Method](#factory-method)
-    - [Abstract Factory](#abstract-factory)
-    - [Builder](#builder)
-- [Behavioural Design Pattern](#behavioural-patterns)
-    - [Strategy Method](#strategy-pattern)
-    - [Observer Pattern](#observer-pattern)
-    - [Decorator Pattern](#decorator-pattern)
+- [Design Patterns:](#design-patterns)
+  - [Details:](#details)
+  - [Creational Design Patterns:](#creational-design-patterns)
+    - [Singleton:](#singleton)
+      - [What is Singleton Design Pattern](#what-is-singleton-design-pattern)
+      - [Why is it needed](#why-is-it-needed)
+      - [How](#how)
+        - [How to convert normal class into singleton class](#how-to-convert-normal-class-into-singleton-class)
+        - [How to make singleton class work in multi threaded environment](#how-to-make-singleton-class-work-in-multi-threaded-environment)
+    - [Factory Method:](#factory-method)
+    - [Abstract Factory:](#abstract-factory)
+      - [Factory vs Abstract Factory](#factory-vs-abstract-factory)
+    - [Builder:](#builder)
+    - [Prototype:](#prototype)
+  - [Behavioural Patterns:](#behavioural-patterns)
+    - [Strategy Pattern:](#strategy-pattern)
+    - [Observer Pattern:](#observer-pattern)
+    - [Decorator Pattern:](#decorator-pattern)
+    - [Chain of Responsibility](#chain-of-responsibility)
     - [Null Object Design Pattern](#null-object-design-pattern)
-    - [State Design Pattern](#state-design-pattern)
-- [Structural Design Patterns](#structural-design-patterns)
+  - [State Design Pattern](#state-design-pattern)
+  - [Structural Design Patterns](#structural-design-patterns)
     - [Proxy Design Pattern](#proxy-design-pattern)
+  - [References:](#references)
 
 ## Details:
 
@@ -33,7 +44,24 @@ Three main groups of patterns:
 
 ## Creational Design Patterns:
 
+Instead of **creating objects directly** all over our code, **creational patterns** provide a **smart, controlled way** to handle the **object creation process**
+
 List of Creational Design Patterns: Factory, Abstract Factory, Builder, Prototype and Singleton.
+- Examples: InMemoryCache, DBConnection, ConfigManager, etc.
+
+### Singleton:
+
+#### What is Singleton Design Pattern
+
+Any object which is shared across our application is called singleton object/instance
+
+#### Why is it needed
+
+#### How
+
+##### How to convert normal class into singleton class
+
+##### How to make singleton class work in multi threaded environment
 
 ### Factory Method:
 <hr>
@@ -100,12 +128,69 @@ Abstract Factory can be implemented either using a Simple Factory approach with 
 - When you want to ensure that objects from different families are used together.
 - When the system should be independent of how objects are created and composed.
 
+#### Factory vs Abstract Factory
+
+**Factory:** Create One Object
+- Burger: VegBurger, ChickenBurger
+```Java
+Burger burger = BurgerFactory.getBurger("VEG");
+```
+
+**Abstract Factory:** Create a set of related objects that belong together
+- Indian Menu: Veg Burger, Veg Fries, Non-Alchoholic Drink
+- American Menu: Chicken Burger, American Fries, Beer
+  - Valid: Indian Burger + Indian Fries + Indian Drink
+  - Valid: American Burger + American Fries + American Drink
+  - Invalid: Indian Burger + American Fries + Indian Drink
+- Another example: GUIFactory -> (WindowGUIFactory, MacGUIFactory)
+  - createButton(), createCheckbox() would alway follow same format either Windows or Mac but same
+- cross-platform furniture sets (modern vs Victorian: chair+sofa+table)
+
+```Java
+interface RestaurantFactory
+{
+    Burger createBurger();
+
+    Fries createFries();
+
+    Drink createDrink();
+}
+
+class IndianFactory implements RestaurantFactory
+{
+    createBurger() // VegBurger
+    createFries() // MasalaFries
+    createDrink() // Lassi
+}
+
+class AmericanFactory implements RestaurantFactory
+{
+    createBurger() // BeefBurger
+    createFries() // CheeseFries
+    createDrink() // Cola
+}
+
+// Client Code
+RestaurantFactory factory = new IndianFactory();
+Burger burger = factory.createBurger();
+Fries fries = factory.createFries();
+Drink drink = factory.createDrink();
+```
+
 ### Builder:
 <hr>
 
-[Computer Builder](./Creational_Patterns/Builder_Pattern/Computer_Builder/ClientCode.java) | [Car Builder - Important](./Creational_Patterns/Builder_Pattern/Car_Production/Demo.java) | [Student Builder](./Creational_Patterns/Builder_Pattern/Student_Builder/Client.java)
+[Email Builder - IMPORTANT and Easy to Understand](./Creational_Patterns/Builder_Pattern/Email_Builder/EmailBuilderMain.java) | [Car Builder - Important](./Creational_Patterns/Builder_Pattern/Car_Production/Demo.java) | [Computer Builder](./Creational_Patterns/Builder_Pattern/Computer_Builder/ClientCode.java) | [Student Builder](./Creational_Patterns/Builder_Pattern/Student_Builder/Client.java)
 
 **Builder** is a creational design pattern that lets you construct complex objects <ins>step by step</ins>.
+
+**Example:** [Email Object](./Creational_Patterns/Builder_Pattern/Email_Builder/EmailBuilderMain.java) 
+- Email object can have multiple fields like to, subject, body, cc, bcc, attachment, ...
+- It is not certain which fields would be used to create an email. One email can have to-sub-body, one can have to-sub-body-attach, and so on
+
+**Problems in Above example before Builder pattern:**
+- Need to pass **`too many null values`** in constructor
+- If we want to avoid null parameter, we will need to create constructors for all the combinations of the fields -> **`Constructor Explosion`**
 
 The pattern allows you to produce different types and representations of an object using the same construction code.
 
@@ -129,6 +214,22 @@ Having Builder class in the code is not strictly necessary. You can always call 
 - **Concrete Builder** (Implements Builder) → Implements the step-by-step object construction.
 - **Director** (Optional, Orchestrates Construction) → Guides the building process (e.g., predefined configurations).
 - **Client** (Uses the Builder to Create Objects) → Uses the builder to construct the object as needed.
+
+### Prototype:
+
+[Code](./Creational_Patterns/Prototype_Pattern/PrototypeMain.java)
+
+- Create objects by copying an existing instance instead of building them from scratch.
+- Useful when setup is expensive or many similar objects are needed.
+- `Vehicle clone()` lets client code clone prototypes generically.
+- Concrete classes still control copying: `Car.clone()` returns a `Car`, `Bus.clone()` returns a `Bus`.
+
+```Java
+// Clone method inside Car class
+public Vehicle clone() {
+  return new Car(this);
+}
+```
 
 ## Behavioural Patterns:
 
