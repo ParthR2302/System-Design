@@ -7,5 +7,5 @@
 - [High Level Design](./Problems/Index.md)
 - [Design Principles](./System_Design_Principles/System%20Design%20Principles.md)
 - [Design Patterns](./Design_Patterns/Design%20Patterns.md)
-- [LLD Interview Questions](./LLD_Questions/LLDQuestions.md)
+- [LLD Problems](https://github.com/ParthR2302/LLD_Questions)
 - [System Design Questions List (IMPORTANT)](./Important/System_Design_Questions.md)
