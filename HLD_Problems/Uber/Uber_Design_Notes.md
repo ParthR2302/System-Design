@@ -4,7 +4,7 @@
 
 - User should be able to `input a start location and an end location, and get an estimate fare`
 - User should be able to `request a ride` based on an estimate
-- Drivers should be able to `accept/deny request` and navigate to pickup/dropoff
+- Drivers should be able to `accept/deny request` and `navigate to pickup/dropoff`
 
 Additional Functional Requirements: 
 
