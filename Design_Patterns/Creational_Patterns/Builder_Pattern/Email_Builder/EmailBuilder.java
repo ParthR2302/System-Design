@@ -3,18 +3,18 @@ package Design_Patterns.Creational_Patterns.Builder_Pattern.Email_Builder;
 import java.util.List;
 
 public class EmailBuilder {
-    private String to;
+    private List<String> to;
     private String subject;
     private String body;
-    private String cc;
-    private String bcc;
+    private List<String> cc;
+    private List<String> bcc;
     private List<String> attachments;
 
     // setters
-    // build() method - IMPORTANT
     // getters
+    // build() method - IMPORTANT
 
-    public EmailBuilder setTo(String to) {
+    public EmailBuilder setTo(List<String> to) {
         this.to = to;
         return this;
     }
@@ -29,12 +29,12 @@ public class EmailBuilder {
         return this;
     }
 
-    public EmailBuilder setCc(String cc) {
+    public EmailBuilder setCc(List<String> cc) {
         this.cc = cc;
         return this;
     }
 
-    public EmailBuilder setBcc(String bcc) {
+    public EmailBuilder setBcc(List<String> bcc) {
         this.bcc = bcc;
         return this;
     }
@@ -44,15 +44,7 @@ public class EmailBuilder {
         return this;
     }
 
-    public Email build() {
-        if(to == null || to.isEmpty()) {
-            throw new IllegalArgumentException("Recipient email address (to) is required.");
-        }
-
-        return new Email(this);
-    }
-
-    public String getTo() {
+    public List<String> getTo() {
         return to;
     }
 
@@ -64,15 +56,23 @@ public class EmailBuilder {
         return body;
     }
 
-    public String getCc() {
+    public List<String> getCc() {
         return cc;
     }
 
-    public String getBcc() {
+    public List<String> getBcc() {
         return bcc;
     }
 
     public List<String> getAttachments() {
         return attachments;
+    }
+
+    public Email build() {
+        if(to == null || to.isEmpty()) {
+            throw new IllegalArgumentException("Recipient(s) email address is required.");
+        }
+
+        return new Email(this);
     }
 }

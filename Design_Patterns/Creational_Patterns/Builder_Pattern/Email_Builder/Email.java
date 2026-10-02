@@ -5,11 +5,11 @@ import java.util.List;
 // We want to keep the Email object immutable, so we will not provide any setters in the Email class. Instead, we will use the EmailBuilder class to construct the Email object.
 
 public class Email {
-    private String to;
+    private List<String> to;
     private String subject;
     private String body;
-    private String cc;
-    private String bcc;
+    private List<String> cc;
+    private List<String> bcc;
     private List<String> attachments;
 
     Email(EmailBuilder builder) {
@@ -23,7 +23,7 @@ public class Email {
     
     // getters
 
-    public String getTo() {
+    public List<String> getTo() {
         return to;
     }
     public String getSubject() {
@@ -32,10 +32,10 @@ public class Email {
     public String getBody() {
         return body;
     }
-    public String getCc() {
+    public List<String> getCc() {
         return cc;
     }
-    public String getBcc() {
+    public List<String> getBcc() {
         return bcc;
     }
     public List<String> getAttachments() {
@@ -43,7 +43,7 @@ public class Email {
     }
 
     public void printEmail() {
-        System.out.println("To: " + to);
+        System.out.println("To: " + to); 
         if(subject == null || subject.isEmpty()) {
             System.out.println("Subject: (No Subject)");
         } else {

@@ -2,7 +2,7 @@
 
 ## Functional Requirements
 
-- User should be able to `input a start location and an end location, and get an estimate fare`
+- User should be able to `input a start location and an end location, and get an estimated fare`
 - User should be able to `request a ride` based on an estimate
 - Drivers should be able to `accept/deny request` and `navigate to pickup/dropoff`
 
@@ -46,8 +46,8 @@ Discuss with the interviewer that we prefer to do it later on in the HLD section
 
 POST /ride/fare-estimate -> Parts of the Ride
 {
-    source,
-    destination
+  source,
+  destination
 }
 
 Why POST on fare-estimate? When getting fare estimate for from-to locations, we would store them in the Ride entity
@@ -56,21 +56,21 @@ Why POST on fare-estimate? When getting fare estimate for from-to locations, we 
 
 PATCH /ride/request -> 200 or 400
 {
-    rideId
+  rideId
 }
 
 Above call would happen Asynchronously
 
 POST /location/update
 {
-    lat,
-    long
+  lat,
+  long
 }
 
 PATCH /ride/driver/accept
 {
-    rideId,
-    True/False
+  rideId,
+  True/False
 }
 
 Realistically above should be a POST as it would create a new row with status
@@ -78,8 +78,8 @@ Realistically above should be a POST as it would create a new row with status
 
 PATCH /ride/driver/update -> lat/long | null
 {
-    rideId,
-    status: 'pickedup' | 'droppedoff'
+  rideId,
+  status: 'pickedup' | 'droppedoff'
 }
 
 The returned lat/long is the location of next step, mainly destination if the status is changed to pickedUp

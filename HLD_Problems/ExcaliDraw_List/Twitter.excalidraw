@@ -1,0 +1,51 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "uNkaTo-6Bz20QntoMi38H",
+      "type": "text",
+      "x": 293.84375,
+      "y": 162.734375,
+      "width": 610.21484375,
+      "height": 325,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 1470919923,
+      "version": 701,
+      "versionNonce": 643332349,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1790603471747,
+      "link": null,
+      "locked": false,
+      "text": "Functional Requirement\n- CRUD on Tweets\n- Follow other users\n- View a timeline of tweets from following\n- Like, Reply/Comment and Retweet\n- Search for tweets\n\nNon-Functional Requirements\n- Highly Available (Eventual Consistency in tweet metadata)\n- Scale to 100s millions of users\n- Read >> Write\n- Low latency\nOther: Security & Privacy of user data",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Functional Requirement\n- CRUD on Tweets\n- Follow other users\n- View a timeline of tweets from following\n- Like, Reply/Comment and Retweet\n- Search for tweets\n\nNon-Functional Requirements\n- Highly Available (Eventual Consistency in tweet metadata)\n- Scale to 100s millions of users\n- Read >> Write\n- Low latency\nOther: Security & Privacy of user data",
+      "autoResize": false,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
