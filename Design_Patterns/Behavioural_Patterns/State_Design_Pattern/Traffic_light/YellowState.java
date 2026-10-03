@@ -5,7 +5,12 @@ public class YellowState implements TrafficLightState {
     public void action(TrafficLight trafficLight) {
         System.out.println("Yellow Light - Slow down!");
         try {
-            Thread.sleep(2000);
+            int i = 2;
+            while(i > 0) {
+                System.out.print(i-- + " ");
+                Thread.sleep(1000);
+            }
+            System.out.println();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

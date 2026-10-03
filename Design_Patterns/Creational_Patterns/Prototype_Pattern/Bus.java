@@ -4,11 +4,10 @@ public class Bus extends Vehicle {
     private int seatCapacity;
 
     public Bus() {
-        super("", "", "");
     }
 
     public Bus(Bus bus) {
-        super(bus.getBrand(), bus.getModel(), bus.getColour());
+        super(bus);
         this.seatCapacity = bus.seatCapacity;
     }
 

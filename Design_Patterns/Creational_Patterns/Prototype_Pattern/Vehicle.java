@@ -5,10 +5,14 @@ public abstract class Vehicle {
     private String model;
     private String colour;
 
-    protected Vehicle(String brand, String model, String colour) {
-        this.brand = brand;
-        this.model = model;
-        this.colour = colour;
+    protected Vehicle() {}
+
+    protected Vehicle(Vehicle target) {
+        if(target != null) {
+            this.brand = target.brand;
+            this.model = target.model;
+            this.colour = target.colour;
+        }
     }
 
     // IMPORTANT: clone() method

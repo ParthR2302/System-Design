@@ -4,12 +4,10 @@ public class Car extends Vehicle {
     private int seatCapacity;
     private String carType;
 
-    public Car() {
-        super("", "", "");
-    }
+    public Car() {}
 
     public Car(Car car) {
-        super(car.getBrand(), car.getModel(), car.getColour());
+        super(car);
         this.seatCapacity = car.seatCapacity;
         this.carType = car.carType;
     }
