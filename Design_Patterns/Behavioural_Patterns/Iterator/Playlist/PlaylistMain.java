@@ -1,5 +1,7 @@
 package Design_Patterns.Behavioural_Patterns.Iterator.Playlist;
 
+import java.util.*;
+
 public class PlaylistMain {
     public static void main(String[] args) {
         Playlist playlist = new Playlist();
@@ -28,9 +30,25 @@ public class PlaylistMain {
 
         // Favourite Playlist Iterator
         System.out.println("\nFavourite Playlist Iterator");
-        PlaylistIterator favouritePlaylistIterator = playlist.iterator("favourite");
+        PlaylistIterator favouritePlaylistIterator = new FavouritePlaylistIterator(playlist);
         while(favouritePlaylistIterator.hasNext()) {
             System.out.println("Playing song: " + favouritePlaylistIterator.next());
+        }
+
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Orange");
+        fruits.add("Mango");
+        fruits.add("Banana");
+
+        Iterator<String> iterator = fruits.iterator();
+
+        // In Java's Iterator from utils, when fetching the iterator, initially the iterator sits before the first element
+        // The hasNext() method check if there exists any next object
+        // the next() method returns the next object of where the iterator is currently at, and then moves the iterator to its next object
+        System.out.println("\nFruits List Traversal using Iterator from Java Util class");
+        while(iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
         }
     }
 }
