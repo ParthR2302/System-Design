@@ -97,7 +97,12 @@ class Folder implements FileSystemItem {
     @Override
     public void ls(int indent) {
         String indentSpace = " ".repeat(indent);
-        System.out.println(indentSpace + "+ " + name);
+        for(FileSystemItem child : children) {
+            if(child.isFolder()) 
+                System.out.println(indentSpace + "+ " + child.getName());
+            else
+                System.out.println(indentSpace + child.getName());
+        }
     }
 
     @Override
@@ -133,10 +138,13 @@ public class FileStructureMain {
         root.add(images);
 
         root.ls(0);
+        System.out.println();
 
         docs.ls(0);
+        System.out.println();
 
         root.openAll(0);
+        System.out.println();
 
         FileSystemItem cwd = root.cd("docs");
         if (cwd != null) {
@@ -144,6 +152,7 @@ public class FileStructureMain {
         } else {
             System.out.println("\nCould not cd into docs\n");
         }
+        System.out.println();
 
         System.out.println(root.getSize());
     }
