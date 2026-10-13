@@ -103,3 +103,16 @@ Finally, create `PaymentController`.
 `PaymentController` → `GatewayFactory` → `PaymentGateway` → `BankingSystem` → External payment provider.
 
 `PaymentService` coordinates payment processing without needing to know provider-specific implementation details.
+
+Now, to add retry functionality without modifying the actual payment gateways, use the **Proxy Pattern**.
+
+- Create `PaymentGatewayProxy`.
+- It wraps a reference to the actual `PaymentGateway`.
+- The client interacts with the proxy instead of directly interacting with the concrete gateway.
+- The proxy delegates payment processing to the actual gateway.
+- If a retryable failure occurs, the proxy retries the operation according to the configured retry policy.
+- This allows us to add retry behavior without modifying `PaytmGateway` or `RazorpayGateway`.
+
+### Updated Flow
+
+`PaymentController` → `GatewayFactory` → `PaymentGatewayProxy` → `PaymentGateway` → `BankingSystem` → External payment provider.
